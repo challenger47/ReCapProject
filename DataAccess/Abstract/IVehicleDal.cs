@@ -5,12 +5,9 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    public interface IVehicleDal
+    public interface IVehicleDal:IEntityRepository<Vehicle>
     {
-        List<Vehicle> GetAll();
-        void Add(Vehicle vehicle);
-        void Delete(Vehicle vehicle);
-        void Update(Vehicle vehicle);
-        List<Vehicle> BringById(int Id);
+       
+
     }
 }

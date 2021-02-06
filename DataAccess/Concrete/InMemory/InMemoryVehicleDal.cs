@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.InMemory
@@ -38,10 +39,7 @@ namespace DataAccess.Concrete.InMemory
             return _vehicles;
         }
 
-        public List<Vehicle> BringById(int Id)
-        {
-           return _vehicles.Where(v => v.Id == Id).ToList();
-        }
+        
 
         public void Update(Vehicle vehicle)
         {
@@ -51,6 +49,21 @@ namespace DataAccess.Concrete.InMemory
             vehicleToUpdate.Description = vehicle.Description;
             vehicleToUpdate.ModelYear = vehicle.ModelYear;
             vehicleToUpdate.DailyPrice = vehicle.DailyPrice;
+        }
+
+        public Vehicle BringById(int Id)
+        {
+           return _vehicles.Where(v => v.Id == Id).SingleOrDefault();
+        }
+
+        public List<Vehicle> GetAll(Expression<Func<Vehicle, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Vehicle Get(Expression<Func<Vehicle, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }
