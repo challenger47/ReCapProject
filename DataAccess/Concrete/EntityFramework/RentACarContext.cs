@@ -11,11 +11,12 @@ namespace DataAccess.Concrete.EntityFramework
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseSqlServer(@"server=DESKTOP-JAMSI54\SQLEXPRESS;Database=RentACar;Trusted_Connection=true");
+         optionsBuilder.UseSqlServer(@"server=DESKTOP-JAMSI54\SQLEXPRESS;Database=RentACar;Trusted_Connection=true");
 
         }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color>Colors { get; set; }
+        public DbSet<Customer>Customers { get; set; }
     }
 }

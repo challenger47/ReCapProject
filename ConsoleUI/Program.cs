@@ -12,45 +12,57 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            brandManager.Add(new Brand { BrandName = " Honda" });
-            VehicleManager vehicleManager = new VehicleManager(new EfVehicleDal());
+           
+            
             Console.WriteLine("Araç Listesinin İlk Hali ");
-            foreach (var vehicle in vehicleManager.GetAll())
+            VehicleManager vehicleManager = new VehicleManager(new EfVehicleDal());
+            foreach (var vehicle in vehicleManager.GetVehicleDetails())
             {
-                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.Id, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
+                Console.WriteLine(vehicle.VehicleName + " " + vehicle.BrandName + " " + vehicle.Color + " " + vehicle.DailyPrice);
 
             }
 
             vehicleManager.Add(new Vehicle { BrandId = 7, ColorId = 4, DailyPrice = 199.90m, Description = "Otomatik", ModelYear = new DateTime(2021) });
 
-            
-            
+
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            brandManager.GetAll();
+            brandManager.Add(new Brand { BrandName = " Nissan" });
+            brandManager.Delete(new Brand {Id=15 });
+            brandManager.BringById(2);
+            brandManager.Update(new Brand { Id = 7, BrandName = "Citroen" });
 
 
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            colorManager.GetAll();
+            colorManager.Add(new Color { Name = " Turkuaz" });
+            colorManager.Delete(new Color { Id = 2 });
+            colorManager.BringById(2);
+            colorManager.Update(new Color { Id = 6, Name = "Mat Siyah" });
 
-            vehicleManager.Delete(new Vehicle() { Id = 12 });
-           
+
+            vehicleManager.Delete(new Vehicle() { Id = 14 });
+
             foreach (var vehicle in vehicleManager.GetAll())
             {
-                Console.WriteLine("{0} {1} {2} {3} {4}",vehicle.Id,vehicle.BrandId,vehicle.ColorId,vehicle.DailyPrice,vehicle.Description);
+                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
 
             }
-            
-            
-               
-            
-            vehicleManager.Update(new Vehicle() { Id = 7, BrandId = 4, ColorId = 1, DailyPrice = 300, ModelYear = new DateTime(2021),Description="Otomatik Dizel 6 vites" });
+
+
+
+
+            vehicleManager.Update(new Vehicle() { Id = 7, BrandId = 4, ColorId = 1, DailyPrice = 300, ModelYear = new DateTime(2021), Description = "Otomatik Dizel 6 vites" });
             Console.WriteLine("Yapılan Güncellemeden sonra ki liste");
             foreach (var vehicle in vehicleManager.GetAll())
             {
-                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId,vehicle.DailyPrice, vehicle.Description);
+                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
 
             }
 
             Console.WriteLine("id ye göre gelen araç");
-            Vehicle vById= vehicleManager.BringById(7);
-            Console.WriteLine("{0} {1} {2} {3} {4}",vById.Id,vById.ColorId,vById.BrandId,vById.DailyPrice,vById.Description);
+            Vehicle vById = vehicleManager.BringById(7);
+            Console.WriteLine("{0} {1} {2} {3} {4}", vById.Id, vById.ColorId, vById.BrandId, vById.DailyPrice, vById.Description);
             Console.WriteLine("Markaya göre araç listesi");
             foreach (var vehicle in vehicleManager.GetVehiclesByBrandId(4))
             {
@@ -61,6 +73,14 @@ namespace ConsoleUI
             {
                 Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
             }
+
+
+
+
+
+
+
+
             Console.ReadLine();
         }
 

@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Business.Abstract
         void Delete(Vehicle vehicle);
         void Update(Vehicle vehicle);
         Vehicle BringById(int id);
+        List<VehicleDetailDto> GetVehicleDetails();
         //List<Vehicle> BringById(int id); çalışır ama yanlış yöntem
 
     }
