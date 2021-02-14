@@ -17,12 +17,12 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public IResult Add(Customer vehicle)
+        public IResult Add(Customer customer)
         {
             return new SuccessResult();
         }
 
-        public IResult Delete(Customer vehicle)
+        public IResult Delete(Customer customer)
         {
             return new SuccessResult();
         }
@@ -37,7 +37,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>( _customerDal.Get(c=>c.Id==id));
         }
 
-        public IResult Update(Customer vehicle)
+        public IResult Update(Customer customer)
         {
             return new SuccessResult();
         }
