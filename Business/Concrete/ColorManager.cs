@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,43 +17,43 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
             if (color.Name.Length < 2)
             {
-                Console.WriteLine("marka ismi en az 3 karakter olmalıdır Girdiğiniz değer: " + color.Name);
+                return new ErrorResult();
             }
             else
             {
                 _colorDal.Add(color);
-                Console.WriteLine("Renk başarıyla eklendi.");
+                return new SuccessResult();
 
             }
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            return new SuccessDataResult< List < Color >>( _colorDal.GetAll());
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
-            Console.WriteLine("Color başarıyla silindi.");
+            return new SuccessResult();
 
         }
 
        
 
-        public Color BringById(int id)
+        public IDataResult<Color> BringById(int id)
         {
-            return _colorDal.Get(c => c.Id == id);
+            return new SuccessDataResult<Color>( _colorDal.Get(c => c.Id == id));
         }
 
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
             _colorDal.Update(color);
-            Console.WriteLine(color.Id + " Id li color Bilgileri Güncellendi");
+            return new SuccessResult();
 
         }
 

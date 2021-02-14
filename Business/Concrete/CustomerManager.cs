@@ -4,6 +4,8 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.Results;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
@@ -15,29 +17,29 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public void Add(Customer vehicle)
+        public IResult Add(Customer vehicle)
         {
-            throw new NotImplementedException();
+            return new SuccessResult();
         }
 
-        public void Delete(Customer vehicle)
+        public IResult Delete(Customer vehicle)
         {
-            throw new NotImplementedException();
+            return new SuccessResult();
         }
 
-        public List<Customer> GetAll()
+        public IDataResult<List<Customer>> GetAll(Expression<Func<Customer, bool>> filter = null)
         {
-            return _customerDal.GetAll();
+            return new SuccessDataResult<List<Customer>>( _customerDal.GetAll());
         }
 
-        public Customer GetById(int id)
+        public IDataResult <Customer> GetById(int id)
         {
-            return _customerDal.Get(c=>c.Id==id);
+            return new SuccessDataResult<Customer>( _customerDal.Get(c=>c.Id==id));
         }
 
-        public void Update(Customer vehicle)
+        public IResult Update(Customer vehicle)
         {
-            throw new NotImplementedException();
+            return new SuccessResult();
         }
     }
 }

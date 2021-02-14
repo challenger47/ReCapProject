@@ -3,87 +3,116 @@ using System;
 using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
-using DataAccess.Concrete.InMemory;
+
 using Entities.Concrete;
 
 namespace ConsoleUI
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-           
-            
-            Console.WriteLine("Araç Listesinin İlk Hali ");
             VehicleManager vehicleManager = new VehicleManager(new EfVehicleDal());
-            foreach (var vehicle in vehicleManager.GetVehicleDetails())
-            {
-                Console.WriteLine(vehicle.VehicleName + " " + vehicle.BrandName + " " + vehicle.Color + " " + vehicle.DailyPrice);
-
-            }
-
-            vehicleManager.Add(new Vehicle { BrandId = 7, ColorId = 4, DailyPrice = 199.90m, Description = "Otomatik", ModelYear = new DateTime(2021) });
-
-
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            brandManager.GetAll();
-            brandManager.Add(new Brand { BrandName = " Nissan" });
-            brandManager.Delete(new Brand {Id=15 });
-            brandManager.BringById(2);
-            brandManager.Update(new Brand { Id = 7, BrandName = "Citroen" });
-
-
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            colorManager.GetAll();
-            colorManager.Add(new Color { Name = " Turkuaz" });
-            colorManager.Delete(new Color { Id = 2 });
-            colorManager.BringById(2);
-            colorManager.Update(new Color { Id = 6, Name = "Mat Siyah" });
+            UserManager userManager = new UserManager(new EfUserDal());
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
 
-            vehicleManager.Delete(new Vehicle() { Id = 14 });
+            Console.WriteLine("Araç Listesinin İlk Hali ");
+            VehicleList(vehicleManager);
+            userManager.Add(new User { FirstName = "Oğuz", LastName = "Bayburtlu", EMail = "dsdddaadda", Password = "password" });
+            customerManager.Add(new Customer { UserId = 3, CompanyName = "Nasa" });
+            Console.WriteLine("Müşteri Listesi");
+            UserList(userManager);
+            BrandTest(brandManager);
+            ColorTest(colorManager);
 
-            foreach (var vehicle in vehicleManager.GetAll())
+            var result = rentalManager.GetRentalDetails();
+            if (result.Success == true)
             {
-                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
+                foreach (var rental in result.Data)
+                {
+                    Console.WriteLine(rental.VehicleName + " " + rental.BrandName + " " + rental.CustomerName + " " + rental.UserName + " " + rental.DailyPrice + " " + rental.RentDate + " " + rental.DeliveryDate);
 
+                }
             }
 
-
-
-
-            vehicleManager.Update(new Vehicle() { Id = 7, BrandId = 4, ColorId = 1, DailyPrice = 300, ModelYear = new DateTime(2021), Description = "Otomatik Dizel 6 vites" });
-            Console.WriteLine("Yapılan Güncellemeden sonra ki liste");
-            foreach (var vehicle in vehicleManager.GetAll())
-            {
-                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
-
-            }
-
-            Console.WriteLine("id ye göre gelen araç");
-            Vehicle vById = vehicleManager.BringById(7);
-            Console.WriteLine("{0} {1} {2} {3} {4}", vById.Id, vById.ColorId, vById.BrandId, vById.DailyPrice, vById.Description);
-            Console.WriteLine("Markaya göre araç listesi");
-            foreach (var vehicle in vehicleManager.GetVehiclesByBrandId(4))
-            {
-                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
-            }
-            Console.WriteLine("Renge göre araç listesi");
-            foreach (var vehicle in vehicleManager.GetVehiclesByColorId(1))
-            {
-                Console.WriteLine("{0} {1} {2} {3} {4}", vehicle.Id, vehicle.BrandId, vehicle.ColorId, vehicle.DailyPrice, vehicle.Description);
-            }
-
-
-
-
-
-
-
+            rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 5, RentDate = Convert.ToDateTime("2021.02.10"), DeliveryDate = Convert.ToDateTime("2021.02.16") });
 
             Console.ReadLine();
         }
 
-        
-}
+        private static void ColorTest(ColorManager colorManager)
+        {
+            colorManager.Delete(new Color { Id = 1012 });
+            colorManager.Add(new Color { Name = "Turkuaz" });
+            colorManager.BringById(3);
+            colorManager.Update(new Color { Id = 6, Name = "Mat Siyah" });
+            var result = colorManager.GetAll();
+            if (result.Success == true)
+            {
+                foreach (var color in result.Data)
+                {
+                    Console.WriteLine(color.Name);
+
+                }
+            }
+        }
+
+        private static void BrandTest(BrandManager brandManager)
+        {
+            brandManager.Delete(new Brand { Id = 1024 });
+            brandManager.Add(new Brand { BrandName = "Nissan" });
+            brandManager.BringById(2);
+            brandManager.Update(new Brand { Id = 7, BrandName = "Citroen" });
+
+
+
+            var result = brandManager.GetAll();
+            if (result.Success == true)
+            {
+                foreach (var brand in result.Data)
+                {
+                    Console.WriteLine(brand.BrandName);
+
+
+                }
+            }
+        }
+
+        private static void VehicleList(VehicleManager vehicleManager)
+        {
+            var result = vehicleManager.GetVehicleDetails();
+            if (result.Success == true)
+            {
+
+
+                foreach (var vehicle in result.Data)
+                {
+                    Console.WriteLine(vehicle.VehicleName + " " + vehicle.BrandName + " " + vehicle.Color + " " + vehicle.DailyPrice);
+
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+        private static void UserList(UserManager userManager)
+        {
+            var result = userManager.GetAll();
+            if(result.Success==true)
+            {
+                foreach (var user  in result.Data )
+                {
+                    Console.WriteLine(user.FirstName + " " + user.LastName);
+
+                }
+            }
+        }
+
+    } 
 }

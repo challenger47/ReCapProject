@@ -1,10 +1,12 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -17,59 +19,72 @@ namespace Business.Concrete
             _vehicleDal = vehicleDal;
         }
 
-        public List<Vehicle> GetAll()
+        public  IDataResult<List<Vehicle>> GetAll(Expression<Func<Vehicle, bool>> filter = null)
         {
-            return _vehicleDal.GetAll();
+            if(DateTime.Now.Hour==22)
+            {
+                return new ErrorDataResult<List<Vehicle>>(Messages.MaintenanceTime);
+            }
+
+            return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(),Messages.VehiclesListed);
         }
        
-        public void Add(Vehicle vehicle)
+        public IResult Add(Vehicle vehicle)
         {
-            if(vehicle.DailyPrice<=0)
+            if(vehicle.VehicleName.Length<2)
             {
-                Console.WriteLine("Araç günlük fiyatı 0 dan büyük olmalıdır");
+                return new ErrorResult(Messages.VehicleNameInvalid);
             }
-            else
-            {
-                _vehicleDal.Add(vehicle);
-                Console.WriteLine(vehicle.Id + " Id li Araç Eklendi");
-            }
-           
+
+            _vehicleDal.Add(vehicle);
+            return new SuccessResult(Messages.VehicleAdded);
+
+
         }
 
-        public void Delete(Vehicle vehicle)
+        public IResult Delete(Vehicle vehicle)
         {
             _vehicleDal.Delete(vehicle);
-            Console.WriteLine(vehicle.Id + " Id li Araç Silindi");
+            return new SuccessResult(Messages.VehicleDeleted);
+
+
         }
 
-        public void Update(Vehicle vehicle)
+        public IResult Update(Vehicle vehicle)
         {
             _vehicleDal.Update(vehicle);
-            Console.WriteLine(vehicle.Id + " Id li Araç Bilgileri Güncellendi");
+            return new SuccessResult(Messages.VehicleUpdated);
+
+
+
         }
 
 
 
-        public Vehicle BringById(int id)
+        public IDataResult<Vehicle> BringById(int id)
         {
-            return _vehicleDal.Get(v => v.Id == id);
+            return new SuccessDataResult<Vehicle>(_vehicleDal.Get(v => v.Id == id));
 
         }
 
-        public List<Vehicle> GetVehiclesByBrandId(int id)
+        public IDataResult<List<Vehicle>> GetVehiclesByBrandId(int id)
         {
-            return _vehicleDal.GetAll(c => c.BrandId == id);
+            return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(v => v.BrandId == id));
         }
 
-        public List<Vehicle> GetVehiclesByColorId(int id)
+        public IDataResult<List<Vehicle>> GetVehiclesByColorId(int id)
         {
-            return _vehicleDal.GetAll(v => v.ColorId == id);
+            return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(v => v.ColorId == id));
 
         }
 
-        public List<VehicleDetailDto> GetVehicleDetails()
+        public IDataResult<List<VehicleDetailDto>> GetVehicleDetails()
         {
-            return _vehicleDal.GetProductDetails();
+            return new SuccessDataResult<List<VehicleDetailDto>>(_vehicleDal.GetVehicleDetails());
+        }
+        public IDataResult<List<Vehicle>> GetByUnitPrice(decimal min,decimal max)
+        {
+            return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(v => v.DailyPrice >= min && v.DailyPrice <= max));
         }
     }
 }

@@ -15,6 +15,5 @@ namespace Entities.DTOs
         public DateTime Model { get; set; }
         public decimal  DailyPrice { get; set; }
 
-
     }
 }
