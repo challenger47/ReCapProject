@@ -21,26 +21,26 @@ namespace ConsoleUI
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
 
-            //Console.WriteLine("Araç Listesinin İlk Hali ");
-            //VehicleList(vehicleManager);
-            //userManager.Add(new User { FirstName = "Oğuz", LastName = "Bayburtlu", EMail = "dsdddaadda", Password = "password" });
+            Console.WriteLine("Araç Listesinin İlk Hali ");
+            VehicleList(vehicleManager);
+            userManager.Add(new User { FirstName = "Oğuz", LastName = "Bayburtlu", EMail = "dsdddaadda", Password = "password" });
             customerManager.Add(new Customer { UserId = 3, CompanyName = "Nasa" });
-            //Console.WriteLine("Müşteri Listesi");
-            //UserList(userManager);
-            //BrandTest(brandManager);
-            //ColorTest(colorManager);
+            Console.WriteLine("Müşteri Listesi");
+            UserList(userManager);
+            BrandTest(brandManager);
+            ColorTest(colorManager);
 
-            //var result = rentalManager.GetRentalDetails();
-            //if (result.Success == true)
-            //{
-            //    foreach (var rental in result.Data)
-            //    {
-            //        Console.WriteLine(rental.VehicleName + " " + rental.BrandName + " " + rental.CustomerName + " " + rental.UserName + " " + rental.DailyPrice + " " + rental.RentDate + " " + rental.DeliveryDate);
+            var result = rentalManager.GetRentalDetails();
+            if (result.Success == true)
+            {
+                foreach (var rental in result.Data)
+                {
+                    Console.WriteLine(rental.VehicleName + " " + rental.BrandName + " " + rental.CustomerName + " " + rental.UserName + " " + rental.DailyPrice + " " + rental.RentDate + " " + rental.DeliveryDate);
 
-            //    }
-            //}
+                }
+            }
 
-            //rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 5, RentDate = Convert.ToDateTime("2021.02.10"), DeliveryDate = Convert.ToDateTime("2021.02.16") });
+            rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 5, RentDate = Convert.ToDateTime("2021.02.10"), DeliveryDate = Convert.ToDateTime("2021.02.16") });
 
             Console.ReadLine();
         }
