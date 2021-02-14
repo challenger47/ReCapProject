@@ -20,13 +20,16 @@ namespace Business.Concrete
         }
         public IResult Add(Rental rental)
         {
-            if (rental.DeliveryDate == null)
+            var notavailable = _rentalDal.GetRentalDetails(v => v.Id == rental.VehicleId && rental.DeliveryDate == null);
+            if (notavailable.Count > 0)
             {
                 return new ErrorResult(Messages.NotAvailable);
             }
-
-            _rentalDal.Add(rental);
-            return new SuccessResult(Messages.RentalSucceed);
+            else
+            {
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.RentalSucceed);
+            }
         }
 
         public IResult Delete(Rental rental)
