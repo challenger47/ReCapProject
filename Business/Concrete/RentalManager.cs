@@ -18,19 +18,49 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-        public IResult Add(Rental rental)
+
+        public IResult IsAvailable(int id)
         {
-            var notavailable = _rentalDal.GetRentalDetails(v => v.Id == rental.VehicleId && rental.DeliveryDate == null);
-            if (notavailable.Count > 0)
+
+            var result = _rentalDal.GetRentalDetails(v => v.VehicleId == id && v.DeliveryDate == null);
+            if (result.Count > 0)
             {
                 return new ErrorResult(Messages.NotAvailable);
             }
-            else
-            {
-                _rentalDal.Add(rental);
-                return new SuccessResult(Messages.RentalSucceed);
-            }
+            return new SuccessResult(Messages.RentalSucceed);
+
+
+
         }
+
+
+        public IResult Add(Rental entity)
+        {
+            Rental result = this.GetById(entity.VehicleId).Data;
+            if(result!=null)
+            {
+                if (result.DeliveryDate==null)
+                {
+                    return new ErrorResult();
+                }
+              
+            }
+            _rentalDal.Add(entity);
+            return new SuccessResult();
+
+        }
+
+        //public IResult Add(Rental rental)
+        //{
+        //    var result = IsAvailable(rental.VehicleId);
+        //    if (!result.Success)
+        //    {
+        //        return new ErrorResult(result.Message);
+        //    }
+        //    _rentalDal.Add(rental);
+        //    return new SuccessResult(result.Message);
+
+        //}
 
         public IResult Delete(Rental rental)
         {
@@ -50,13 +80,15 @@ namespace Business.Concrete
 
         public IDataResult<Rental> GetById(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id==id));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.VehicleId==id));
         }
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails(Expression<Func<Rental, bool>> filter = null)
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
+
+      
 
         public IResult Update(Rental rental)
         {

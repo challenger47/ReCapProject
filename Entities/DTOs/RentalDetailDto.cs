@@ -19,7 +19,7 @@ namespace Entities.DTOs
           
             public decimal DailyPrice { get; set; }
             public DateTime RentDate { get; set; }
-            public DateTime DeliveryDate { get; set; }
+            public DateTime? DeliveryDate { get; set; }
 
 
 

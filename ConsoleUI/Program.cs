@@ -13,6 +13,7 @@ namespace ConsoleUI
 
         static void Main(string[] args)
         {
+            
             VehicleManager vehicleManager = new VehicleManager(new EfVehicleDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
@@ -21,15 +22,22 @@ namespace ConsoleUI
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
 
-            Console.WriteLine("Araç Listesinin İlk Hali ");
-            VehicleList(vehicleManager);
-            userManager.Add(new User { FirstName = "Oğuz", LastName = "Bayburtlu", EMail = "dsdddaadda", Password = "password" });
-            customerManager.Add(new Customer { UserId = 3, CompanyName = "Nasa" });
-            Console.WriteLine("Müşteri Listesi");
-            UserList(userManager);
-            BrandTest(brandManager);
-            ColorTest(colorManager);
+            //Console.WriteLine("Araç Listesinin İlk Hali ");
+            //VehicleList(vehicleManager);
+            //userManager.Add(new User { FirstName = "Oğuz", LastName = "Bayburtlu", EMail = "dsdddaadda", Password = "password" });
+            //customerManager.Add(new Customer { UserId = 3, CompanyName = "Nasa" });
+            //Console.WriteLine("Müşteri Listesi");
+            //UserList(userManager);
+            //BrandTest(brandManager);
+            //ColorTest(colorManager);
+            RentalTest(rentalManager);
+            Console.WriteLine("Hello");
 
+            Console.ReadLine();
+        }
+
+        private static void RentalTest(RentalManager rentalManager)
+        {
             var result = rentalManager.GetRentalDetails();
             if (result.Success == true)
             {
@@ -40,9 +48,7 @@ namespace ConsoleUI
                 }
             }
 
-            rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 5, RentDate = Convert.ToDateTime("2021.02.10"), DeliveryDate = Convert.ToDateTime("2021.02.16") });
-
-            Console.ReadLine();
+            rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 4, RentDate = Convert.ToDateTime("2021.02.10") });
         }
 
         private static void ColorTest(ColorManager colorManager)
