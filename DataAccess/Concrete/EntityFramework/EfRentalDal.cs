@@ -36,6 +36,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  BrandName=b.BrandName,
                                  CustomerName = c.CompanyName,
                                  UserName = u.FirstName + " " + u.LastName,
+                                 DailyPrice=v.DailyPrice,
                                  RentDate = r.RentDate,
                                  DeliveryDate = r.DeliveryDate
                              };

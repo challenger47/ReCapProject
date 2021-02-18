@@ -10,7 +10,7 @@ namespace Business.Abstract
    public interface ICustomerService
     {
         IDataResult<List<Customer>> GetAll(Expression<Func<Customer, bool>> filter = null);
-        IDataResult <Customer> GetById(int id);
+        IDataResult <Customer> BringById(int id);
         IResult Add(Customer customer);
         IResult Delete(Customer customer);
         IResult Update(Customer customer);

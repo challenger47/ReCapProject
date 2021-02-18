@@ -31,7 +31,7 @@ namespace ConsoleUI
             //BrandTest(brandManager);
             //ColorTest(colorManager);
             RentalTest(rentalManager);
-            Console.WriteLine("Hello");
+          
 
             Console.ReadLine();
         }
@@ -48,7 +48,7 @@ namespace ConsoleUI
                 }
             }
 
-            rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 4, RentDate = Convert.ToDateTime("2021.02.10") });
+            rentalManager.Add(new Rental { CustomerId = 2, VehicleId = 3, RentDate = Convert.ToDateTime("2021.02.10") });
         }
 
         private static void ColorTest(ColorManager colorManager)

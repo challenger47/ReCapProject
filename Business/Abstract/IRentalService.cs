@@ -11,8 +11,8 @@ namespace Business.Abstract
    public interface IRentalService
     {
         IDataResult<List<Rental>> GetAll(Expression<Func<Rental, bool>> filter = null);
-        IDataResult<Rental> GetById(int id);
-        IResult IsAvailable(int id);
+        IDataResult<Rental> BringById(int id);
+       
         IResult Add(Rental rental);
         IResult Update(Rental rental);
         IResult Delete(Rental rental);

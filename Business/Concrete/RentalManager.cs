@@ -19,48 +19,26 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
-        public IResult IsAvailable(int id)
-        {
+       
 
-            var result = _rentalDal.GetRentalDetails(v => v.VehicleId == id && v.DeliveryDate == null);
-            if (result.Count > 0)
+
+        public IResult Add(Rental rental)
+        {
+            Rental result = this.BringById(rental.VehicleId).Data;
+            if (result != null)
             {
-                return new ErrorResult(Messages.NotAvailable);
+                if (result.DeliveryDate == null)
+                {
+                    return new ErrorResult(Messages.NotAvailable);
+                }
+
             }
+            _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentalSucceed);
 
-
-
         }
 
 
-        public IResult Add(Rental entity)
-        {
-            Rental result = this.GetById(entity.VehicleId).Data;
-            if(result!=null)
-            {
-                if (result.DeliveryDate==null)
-                {
-                    return new ErrorResult();
-                }
-              
-            }
-            _rentalDal.Add(entity);
-            return new SuccessResult();
-
-        }
-
-        //public IResult Add(Rental rental)
-        //{
-        //    var result = IsAvailable(rental.VehicleId);
-        //    if (!result.Success)
-        //    {
-        //        return new ErrorResult(result.Message);
-        //    }
-        //    _rentalDal.Add(rental);
-        //    return new SuccessResult(result.Message);
-
-        //}
 
         public IResult Delete(Rental rental)
         {
@@ -78,7 +56,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.DeliveryDate !=null));
         }
 
-        public IDataResult<Rental> GetById(int id)
+        public IDataResult<Rental> BringById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.VehicleId==id));
         }
