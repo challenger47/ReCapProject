@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -29,12 +31,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(),Messages.VehiclesListed);
         }
        
+        [ValidationAspect(typeof(VehicleValidator))]
         public IResult Add(Vehicle vehicle)
         {
-            if(vehicle.VehicleName.Length<2)
-            {
-                return new ErrorResult(Messages.VehicleNameInvalid);
-            }
+            
 
             _vehicleDal.Add(vehicle);
             return new SuccessResult(Messages.VehicleAdded);
