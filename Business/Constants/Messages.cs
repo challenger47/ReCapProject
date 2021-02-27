@@ -22,6 +22,10 @@ namespace Business.Constants
         public static string ColorDeleted = "Renk Silindi ";
         public static string RentalSucceed = "Kiralama işlemi gerçekleşti ";
         public static string NotAvailable = "Araç Müsait değil Teslim edilmedi veya Arızalı ";
-
+        public static string TheSameVehicleCountError="Aynı İsimli Araçtan 5 adet Kaydedebilirsiniz"; //uydurma kurallar
+        public static string TheSameBrandCountError="Aynı Markadan sadece 3 çeşit Araç Eklenebilir";
+        public static string ImageAdded="Araç Resmi Eklendi";
+        public static string ImageDeleted="Araç Resmi Silindi";
+        internal static string ImageLimit="Bir Araç için En fazla 5 Adet Resim girilebilir";
     }
 }

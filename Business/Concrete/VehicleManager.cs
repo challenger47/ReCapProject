@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -16,9 +17,11 @@ namespace Business.Concrete
    public class VehicleManager : IVehicleService
     {
         IVehicleDal _vehicleDal;
-        public VehicleManager(IVehicleDal vehicleDal)
+        IBrandService _brandService;
+        public VehicleManager(IVehicleDal vehicleDal, IBrandService brandService)
         {
             _vehicleDal = vehicleDal;
+            _brandService = brandService;
         }
 
         public  IDataResult<List<Vehicle>> GetAll(Expression<Func<Vehicle, bool>> filter = null)
@@ -32,10 +35,15 @@ namespace Business.Concrete
         }
        
         [ValidationAspect(typeof(VehicleValidator))]
+
         public IResult Add(Vehicle vehicle)
         {
-            
+            IResult result = BusinessRules.Run(CheckIfTheSameVehicleCountExceeded(vehicle.VehicleName),CheckIfTheSameBrandCountExceeded());//Eklenecek her yeni kuralın aşağıda metodunu yazıp burda virgülle ayırıp çagırıyoruz
+            if (result!=null)
+            {
+                return result;
 
+            }
             _vehicleDal.Add(vehicle);
             return new SuccessResult(Messages.VehicleAdded);
 
@@ -49,7 +57,7 @@ namespace Business.Concrete
 
 
         }
-
+        [ValidationAspect(typeof(VehicleValidator))]
         public IResult Update(Vehicle vehicle)
         {
             _vehicleDal.Update(vehicle);
@@ -86,5 +94,32 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(v => v.DailyPrice >= min && v.DailyPrice <= max));
         }
+
+
+        //İş kuralları
+        private IResult CheckIfTheSameVehicleCountExceeded(string vehicleName)
+        {
+            var result = _vehicleDal.GetAll(p => p.VehicleName == vehicleName).Count;
+            if (result>5)
+            {
+
+                return new ErrorResult(Messages.TheSameVehicleCountError);
+
+            }
+            return new SuccessResult(Messages.VehicleAdded);
+        }
+        private IResult CheckIfTheSameBrandCountExceeded()
+        {
+            var result = _brandService.GetAll();
+            if (result.Data.Count >3)
+            {
+
+                return new ErrorResult(Messages.TheSameBrandCountError);
+
+            }
+            return new SuccessResult(Messages.VehicleAdded);
+        }
+
+       
     }
 }

@@ -7,6 +7,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -47,7 +48,7 @@ namespace Business.Concrete
 
 
 
-        public IDataResult<List<Brand>> GetAll()
+        public IDataResult<List<Brand>> GetAll(Expression<Func<Brand, bool>> filter = null)
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
 
