@@ -10,7 +10,7 @@ namespace Business.ValidationRules.FluentValidation
     {
        public ImageValidator()
         {
-            RuleFor(v => v.ImagePath).NotEmpty();
+           // fakat bu hatayı işlk defa veriyor bilginiz olsun evet biliyorum diğer hata çözüldü zatteen  NASIL ÇÖZÜLDÜ ? BEN GÖRMEDİM :D //bunun olmaması gerekiyor çünkü dosya gönderdiğinde imagepath boş geliyor
             RuleFor(v => v.VehicleId).NotEmpty();
         }
     }

@@ -3,8 +3,9 @@ using System;
 using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
-
 using Entities.Concrete;
+using Core.Entities.Concrete;
+
 
 namespace ConsoleUI
 {

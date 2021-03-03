@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Utilities.FileOperation
+namespace Core.Utilities.FileHelper
 {
     public class FileHelper
     {
@@ -46,7 +46,11 @@ namespace Core.Utilities.FileOperation
                + DateTime.Now.Day + "-"
                + DateTime.Now.Year + fileExtension;
 
-            string path = Path.Combine(Environment.CurrentDirectory + @"/wwwroot/ImagesRepos");
+            string path = Path.Combine(Environment.CurrentDirectory + @"/wwwroot/Images");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             string result = $@"{path}\{creatingUniqueFilename}";
 

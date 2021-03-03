@@ -49,7 +49,8 @@ namespace Business.Concrete
 
         public IDataResult<Color> BringById(int id)
         {
-            return new SuccessDataResult<Color>( _colorDal.Get(c => c.Id == id));
+            var result = _colorDal.Get(c => c.Id == id);
+            return new SuccessDataResult<Color>();
         }
 
         public IResult Update(Color color)

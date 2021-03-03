@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using Entities.Concrete;
+using Core.Entities.Concrete;
 
 namespace Business.Constants
 {
@@ -26,6 +28,15 @@ namespace Business.Constants
         public static string TheSameBrandCountError="Aynı Markadan sadece 3 çeşit Araç Eklenebilir";
         public static string ImageAdded="Araç Resmi Eklendi";
         public static string ImageDeleted="Araç Resmi Silindi";
-        internal static string ImageLimit="Bir Araç için En fazla 5 Adet Resim girilebilir";
+        public static string ImageLimit="Bir Araç için En fazla 5 Adet Resim girilebilir";
+        public static string AuthorizationDenied="Yetkiniz Yok";
+        public static string UserRegistered="Kullanıcı Kaydedildi";
+        public static string UserNotFound = "Kullanıcı Bulunamadı";
+        public static string PasswordError = "Şifre Hatalı";
+        public static string SuccessfulLogin = "Giriş Bşarılı";
+        public static string UserAlreadyExists = "Bu isimde bir Kullanıcı Zaten Var ";
+        public static string AccessTokenCreated = "Access Token Oluşturuldu ";
+        internal static string UserDeleted="Kullanıcı Silindi";
+        internal static string UserUpdated="Kullanıcı bilgileri güncellendi";
     }
 }

@@ -4,8 +4,10 @@ using Business.Abstract;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,6 +38,12 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<ImageManager>().As<IImageService>().SingleInstance();
             builder.RegisterType<EfImageDal>().As<IImageDal>().SingleInstance();
+
+           
+
+            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance(); // Hoca burda single instance yazmadı bi sorun olursa kaldırırırız
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance(); // Hoca burda single instance yazmadı bi sorun olursa kaldırırırız
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

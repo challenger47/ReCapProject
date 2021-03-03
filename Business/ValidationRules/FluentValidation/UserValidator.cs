@@ -1,4 +1,4 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -13,8 +13,8 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(p => p.FirstName).NotEmpty();//.WithMessage("") ile mesajda eklenebilir
             RuleFor(p => p.LastName).NotEmpty();//.WithMessage("") ile mesajda eklenebilir
-            RuleFor(p => p.EMail).NotEmpty();//.WithMessage("") ile mesajda eklenebilir
-            RuleFor(p => p.Password).NotEmpty();//.WithMessage("") ile mesajda eklenebilir
+            RuleFor(p => p.Email).NotEmpty();//.WithMessage("") ile mesajda eklenebilir
+            //RuleFor(p => p.Password).NotEmpty();//.WithMessage("") ile mesajda eklenebilir
 
 
         }

@@ -58,17 +58,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult AddAsync([FromForm(Name = ("image"))] IFormFile file, [FromForm] Image image)
+        public IActionResult Add([FromForm] IFormFile file, [FromForm] Image image) // rica ederim bi deneyelim 
         {
             var result = _imageService.Add(file, image);
-
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
+
 
         [HttpDelete("delete")]
         public IActionResult Delete(Image image)

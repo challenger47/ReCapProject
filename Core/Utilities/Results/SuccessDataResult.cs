@@ -10,10 +10,11 @@ namespace Core.Utilities.Results
         {
 
         }
-        public SuccessDataResult(T data):base(data,true)
+        public SuccessDataResult(T data) : base(data, true)
         {
-
+            // mesajsız hali data - işlem sonucu
         }
+      
         public SuccessDataResult(string message):base(default,true,message)
         {
 

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -35,7 +36,7 @@ namespace Business.Concrete
         }
        
         [ValidationAspect(typeof(VehicleValidator))]
-
+        [SecuredOperation("vehicle.add,admin")]
         public IResult Add(Vehicle vehicle)
         {
             IResult result = BusinessRules.Run(CheckIfTheSameVehicleCountExceeded(vehicle.VehicleName),CheckIfTheSameBrandCountExceeded());//Eklenecek her yeni kuralın aşağıda metodunu yazıp burda virgülle ayırıp çagırıyoruz

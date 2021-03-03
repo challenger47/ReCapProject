@@ -3,7 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
-using Core.Utilities.FileOperation;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Business.Concrete
 {
@@ -29,7 +28,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ImageValidator))]
         public IResult Add(IFormFile file, Image image)
         {
-            IResult result = BusinessRules.Run(CheckIfImageLimit(image.VehicleId));
+            var result = BusinessRules.Run(CheckIfImageLimit(image.VehicleId));
 
             if (result != null)
             {
@@ -63,15 +62,9 @@ namespace Business.Concrete
             return new SuccessDataResult<Image>(_imageDal.Get(p => p.Id == id));
         }
 
-        public IDataResult<List<Image>> GetAll()
-        {
-            return new SuccessDataResult<List<Image>>(_imageDal.GetAll());
-        }
 
-        public IDataResult<List<Image>> GetByImagesCarId(int id)
-        {
-            return new SuccessDataResult<List<Image>>(CheckIfCarImageIsEmpty(id));
-        }
+
+
 
         [ValidationAspect(typeof(ImageValidator))]
         public IResult Update(IFormFile file, Image image)
@@ -84,9 +77,17 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-    
 
 
+        public IDataResult<List<Image>> GetAll(Expression<Func<Image, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<Image>>(_imageDal.GetAll());
+        }
+
+        public IDataResult<List<Image>> GetByVehicleId(int id)
+        {
+            return new SuccessDataResult<List<Image>>(CheckIfCarImageIsEmpty(id));
+        }
 
 
 
@@ -119,11 +120,11 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckIfImageLimit(int carid)
+        private IResult CheckIfImageLimit(int vehicleId)
         {
-            var carImagecount = _imageDal.GetAll(p => p.VehicleId == carid).Count;
+            var carImagecount = _imageDal.GetAll(p => p.VehicleId == vehicleId).Count;
 
-            if (carImagecount >= 5)
+            if (carImagecount == 5)
             {
                 return new ErrorResult(Messages.ImageLimit);
             }
@@ -131,16 +132,5 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<List<Image>> GetAll(Expression<Func<Image, bool>> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-       
-
-        public IDataResult<Image> GetByVehicleId(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
