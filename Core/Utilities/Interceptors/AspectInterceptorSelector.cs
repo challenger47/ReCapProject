@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy;
-using Core.Aspects.Autofac.Caching;
+
+using Core.Aspects.Autofac.Caching.Performance;
 using System;
 using System.Collections.Generic;
 using System.Linq;

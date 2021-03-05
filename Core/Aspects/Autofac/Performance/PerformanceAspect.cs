@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Aspects.Autofac.Caching
+namespace Core.Aspects.Autofac.Caching.Performance
 {
     public class PerformanceAspect : MethodInterception
     {

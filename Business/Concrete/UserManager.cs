@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using Entities.Concrete;
 using Core.Utilities.Results;
+using System.Linq.Expressions;
+using Core.Aspects.Autofac.Caching;
 
 namespace Business.Concrete
 {
@@ -28,8 +30,8 @@ namespace Business.Concrete
             _userDal.Delete(user);
             return new SuccessResult(Messages.UserDeleted);
         }
-
-        public IDataResult<List<User>> GetAll()
+        [CacheAspect]
+        public IDataResult<List<User>> GetAll(Expression<Func<User, bool>> filter = null)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
@@ -42,9 +44,9 @@ namespace Business.Concrete
         public IResult Update(User user)
         {
             _userDal.Update(user);
-            return new SuccessResult(Messages.UserUpdated);
+            return new SuccessResult();
         }
-
+        [CacheAspect]
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
