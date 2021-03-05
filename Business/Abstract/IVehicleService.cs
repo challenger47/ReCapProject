@@ -20,6 +20,7 @@ namespace Business.Abstract
         IResult Update(Vehicle vehicle);
         IDataResult<Vehicle> BringById(int id);
         IDataResult<List<VehicleDetailDto>> GetVehicleDetails();
+        IResult AddTransactionalTest(Vehicle vehicle);
     
 
     }

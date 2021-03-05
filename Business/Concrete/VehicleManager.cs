@@ -2,6 +2,7 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -24,7 +25,8 @@ namespace Business.Concrete
             _vehicleDal = vehicleDal;
             _brandService = brandService;
         }
-
+        [CacheAspect]
+        
         public  IDataResult<List<Vehicle>> GetAll(Expression<Func<Vehicle, bool>> filter = null)
         {
             if(DateTime.Now.Hour==22)
@@ -37,6 +39,8 @@ namespace Business.Concrete
        
         [ValidationAspect(typeof(VehicleValidator))]
         [SecuredOperation("vehicle.add,admin")]
+        [CacheRemoveAspect("IVehicleService.Get")]
+        [CacheRemoveAspect("IVehicleService.GetAll")]
         public IResult Add(Vehicle vehicle)
         {
             IResult result = BusinessRules.Run(CheckIfTheSameVehicleCountExceeded(vehicle.VehicleName),CheckIfTheSameBrandCountExceeded());//Eklenecek her yeni kuralın aşağıda metodunu yazıp burda virgülle ayırıp çagırıyoruz
@@ -58,6 +62,8 @@ namespace Business.Concrete
 
 
         }
+        [CacheRemoveAspect("IVehicleService.Get")]
+        [CacheRemoveAspect("IVehicleService.GetAll")]
         [ValidationAspect(typeof(VehicleValidator))]
         public IResult Update(Vehicle vehicle)
         {
@@ -69,7 +75,7 @@ namespace Business.Concrete
         }
 
 
-
+        [CacheAspect]
         public IDataResult<Vehicle> BringById(int id)
         {
             return new SuccessDataResult<Vehicle>(_vehicleDal.Get(v => v.Id == id));
@@ -120,7 +126,17 @@ namespace Business.Concrete
             }
             return new SuccessResult(Messages.VehicleAdded);
         }
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Vehicle vehicle)
+        {
+            Add(vehicle);
+            if (vehicle.DailyPrice<120)
+            {
+                return new ErrorResult();
 
-       
+            }
+            Add(vehicle);
+            return null;
+        }
     }
 }
