@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -22,6 +23,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public IActionResult Get()
         {
+            Thread.Sleep(3000);
             var result = _vehicleService.GetAll();
             if(result.Success)
             {
@@ -71,9 +73,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpGet("getbybrand")]
-        public IActionResult GetByBrand(int id)
+        public IActionResult GetByBrand(int brandId)
         {
-            var result = _vehicleService.GetVehiclesByBrandId(id);
+            var result = _vehicleService.GetVehiclesByBrandId(brandId);
             if(result.Success)
             {
                 return Ok(result);
@@ -95,6 +97,39 @@ namespace WebAPI.Controllers
         public IActionResult GetVehicleDetails()
         {
             var result = _vehicleService.GetVehicleDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getvehicledetailsbyvehicleid")]
+        public IActionResult GetVehicleDetailsByVehicleId(int id)
+        {
+            var result = _vehicleService.GetVehicleDetailsByVehicleId(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getvehicledetailsbybrandid")]
+        public IActionResult GetVehicleDetailsByBrandId(int brandId)
+        {
+
+            var result = _vehicleService.GetVehicleDetailsByBrandId(brandId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getvehicledetailsbycolorid")]
+        public IActionResult GetVehiclesByColorId(int colorId)
+        {
+
+            var result = _vehicleService.GetVehicleDetailsByColorId(colorId);
             if (result.Success)
             {
                 return Ok(result);

@@ -30,10 +30,10 @@ namespace Business.Concrete
         
         public  IDataResult<List<Vehicle>> GetAll(Expression<Func<Vehicle, bool>> filter = null)
         {
-            if(DateTime.Now.Hour==22)
-            {
-                return new ErrorDataResult<List<Vehicle>>(Messages.MaintenanceTime);
-            }
+           // if(DateTime.Now.Hour==22) örnek iş kuralı
+            //{
+                //return new ErrorDataResult<List<Vehicle>>(Messages.MaintenanceTime);
+            //}
 
             return new SuccessDataResult<List<Vehicle>>(_vehicleDal.GetAll(),Messages.VehiclesListed);
         }
@@ -138,6 +138,21 @@ namespace Business.Concrete
             }
             Add(vehicle);
             return null;
+        }
+
+        public IDataResult<List<VehicleDetailDto>> GetVehicleDetailsByVehicleId(int vehicleId)
+        {
+            return new SuccessDataResult<List<VehicleDetailDto>>(_vehicleDal.GetVehicleDetails(v => v.Id == vehicleId));
+        }
+
+        public IDataResult<List<VehicleDetailDto>> GetVehicleDetailsByBrandId(int brandId)
+        {
+            return new SuccessDataResult<List<VehicleDetailDto>>(_vehicleDal.GetVehicleDetails(v => v.BrandId == brandId));
+        }
+
+        public IDataResult<List<VehicleDetailDto>> GetVehicleDetailsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<VehicleDetailDto>>(_vehicleDal.GetVehicleDetails(v => v.ColorId == colorId));
         }
     }
 }

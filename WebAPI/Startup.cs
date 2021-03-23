@@ -39,6 +39,7 @@ namespace WebAPI
             services.AddControllers();
             //services.AddSingleton<IVehicleService, VehicleManager>();
             //services.AddSingleton<IVehicleDal, EfVehicleDal>();
+            services.AddCors();
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -65,13 +66,15 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4201/").AllowAnyHeader().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+           
 
             app.UseAuthentication();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

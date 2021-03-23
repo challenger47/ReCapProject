@@ -1,60 +1,42 @@
-﻿using Core.Utilities.Results;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Core.Utilities.FileHelper
 {
     public class FileHelper
     {
-        public static string AddAsync(IFormFile file)
+        static string directory = Directory.GetCurrentDirectory() + @"\wwwroot\";
+        static string path = @"Images\";
+        public static string Add(IFormFile file)
         {
-
-            var sourcepath = Path.GetTempFileName();
-            if (file.Length > 0)
-                using (var stream = new FileStream(sourcepath, FileMode.Create))
-                    file.CopyTo(stream);
-
-            var result = newPath(file);
-
-            File.Move(sourcepath, result);
-
-            return result;
-        }
-
-        public static string UpdateAsync(string sourcePath, IFormFile file)
-        {
-            var result = newPath(file);
-
-            File.Copy(sourcePath, result);
-
-            File.Delete(sourcePath);
-
-            return result;
-        }
-
-        public static string newPath(IFormFile file)
-        {
-            System.IO.FileInfo ff = new System.IO.FileInfo(file.FileName);
-            string fileExtension = ff.Extension;
-
-            var creatingUniqueFilename = Guid.NewGuid().ToString("D")
-               + "-" + DateTime.Now.Month + "-"
-               + DateTime.Now.Day + "-"
-               + DateTime.Now.Year + fileExtension;
-
-            string path = Path.Combine(Environment.CurrentDirectory + @"/wwwroot/Images");
-            if (!Directory.Exists(path))
+            string extension = Path.GetExtension(file.FileName).ToUpper();
+            string newFileName = Guid.NewGuid().ToString("N") + extension;
+            if (!Directory.Exists(directory + path))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(directory + path);
             }
+            using (FileStream fileStream = File.Create(directory + path + newFileName))
+            {
+                file.CopyTo(fileStream);
+                fileStream.Flush();
+            }
+            return (path + newFileName).Replace("\\", "/");
+        }
 
-            string result = $@"{path}\{creatingUniqueFilename}";
+        public static string Update(IFormFile file, string oldImagePath)
+        {
+            Delete(oldImagePath);
+            return Add(file);
+        }
 
-            return result;
+        public static void Delete(string imagePath)
+        {
+            if (File.Exists(directory + imagePath.Replace("/", "\\"))
+                && Path.GetFileName(imagePath) != "default.png")
+            {
+                File.Delete(directory + imagePath.Replace("/", "\\"));
+            }
         }
 
     }

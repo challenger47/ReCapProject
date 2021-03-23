@@ -22,7 +22,11 @@ namespace DataAccess.Concrete.EntityFramework
                              on v.BrandId equals b.Id
                              join c in context.Colors
                              on v.ColorId equals c.Id
-                             select new VehicleDetailDto {Id=v.Id,VehicleName=v.VehicleName, BrandName=b.BrandName,Color=c.Name,DailyPrice=v.DailyPrice };
+                             
+                             select new VehicleDetailDto 
+                             {
+                                 Id=v.Id,VehicleName=v.VehicleName, BrandName=b.BrandName,BrandId=v.BrandId,ColorId=v.ColorId, Color=c.Name,DailyPrice=v.DailyPrice,Images = context.Images.Where(image => image.VehicleId == v.Id).ToList() 
+                             };
                 return result.ToList(); // VAR RESULT BİR DONGU DONDURUYOR
             }
         }

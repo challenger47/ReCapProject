@@ -8,6 +8,8 @@ using Core.Utilities.Results;
 using System.Linq.Expressions;
 using Core.Aspects.Autofac.Validation;
 using Business.ValidationRules.FluentValidation;
+using Entities.DTOs;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -46,6 +48,11 @@ namespace Business.Concrete
         {
             _customerDal.Update(customer);
             return new SuccessResult();
+        }
+        
+        public IDataResult<List<CustomerDetailDto>> GetCustomerDetails(Expression<Func<Customer, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails());
         }
     }
 }

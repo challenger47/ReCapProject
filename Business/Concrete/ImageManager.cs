@@ -35,7 +35,7 @@ namespace Business.Concrete
                 return result;
             }
 
-            image.ImagePath = FileHelper.AddAsync(file);
+            image.ImagePath = FileHelper.Add(file);
             image.Date = DateTime.Now;
             _imageDal.Add(image);
 
@@ -51,7 +51,8 @@ namespace Business.Concrete
             {
                 return result;
             }
-
+            var oldPath = _imageDal.Get(c => c.Id == image.Id).ImagePath;
+            FileHelper.Delete(oldPath);
             _imageDal.Delete(image);
 
             return new SuccessResult();
@@ -69,9 +70,9 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ImageValidator))]
         public IResult Update(IFormFile file, Image image)
         {
-            image.ImagePath = FileHelper.UpdateAsync(_imageDal.Get(p => p.Id == image.Id).ImagePath, file);
+            var oldPath = _imageDal.Get(p => p.Id == image.Id).ImagePath;
+            image.ImagePath = FileHelper.Update(file,oldPath);
             image.Date = DateTime.Now;
-
             _imageDal.Update(image);
 
             return new SuccessResult();

@@ -15,31 +15,34 @@ namespace DataAccess.Concrete.EntityFramework
 
 
 
-        public List<RentalDetailDto> GetRentalDetails(Expression<Func<Rental, bool>> filter = null)
+        public List<RentalDetailDto>GetRentalDetails(Expression<Func<Rental, bool>> filter = null)
         {
             using (RentACarContext context = new RentACarContext())
             {
-                var result = from r in filter == null ? context.Rentals : context.Rentals.Where(filter)
-                             join v in context.Vehicles
-                             on r.VehicleId equals v.Id
-                             join b in context.Brands
-                             on v.BrandId equals b.Id
-                             join c in context.Customers
-                             on r.CustomerId equals c.Id
-                             
-                             join u in context.Users
-                             on c.UserId equals u.Id
+                var result = from rental in filter == null ? context.Rentals : context.Rentals.Where(filter)
+                             join vehicle in context.Vehicles
+                             on rental.VehicleId equals vehicle.Id
+                             join brand in context.Brands
+                             on vehicle.BrandId equals brand.Id
+                             join customer in context.Customers
+                             on rental.CustomerId equals customer.Id
+
+                             join user in context.Users
+                             on customer.UserId equals user.Id //çoklu joinlerde tam isim vermen daha iyi olur
                              select new RentalDetailDto
                              {
-                                 Id = r.Id,
-                                 VehicleName = v.VehicleName,
-                                 BrandName=b.BrandName,
-                                 CustomerName = c.CompanyName,
-                                 UserName = u.FirstName + " " + u.LastName,
-                                 DailyPrice=v.DailyPrice,
-                                 RentDate = r.RentDate,
-                                 DeliveryDate = r.DeliveryDate
+                                 Id = rental.Id,
+                                 VehicleId = vehicle.Id,
+                                 CustomerId = customer.Id,
+                                 VehicleName = vehicle.VehicleName,
+                                 BrandName=brand.BrandName,
+                                 CustomerName = customer.CompanyName,
+                                 UserName = $"{ user.FirstName }  { user.LastName }",
+                                 DailyPrice=vehicle.DailyPrice,
+                                 RentDate = rental.RentDate,
+                                 DeliveryDate = rental.DeliveryDate
                              };
+                var x = result.ToList();
                 return result.ToList();
             }
         }
